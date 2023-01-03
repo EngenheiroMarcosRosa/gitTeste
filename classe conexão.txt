@@ -1,0 +1,107 @@
+(ABAIXO TODA A CLASSE CONNECTIONFACTORY DO PACOTE DAO)
+
+package dao;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConnectionFactory {
+
+	public Connection getConnection ( ) {
+		try {
+			return DriverManager.getConnection ( “jdbc:mysql://localhost:3306; databasename = loja ; user = nomedousuario ; password = númerosdasenha ou letras “) ;
+
+} catch ( SQLException erro ) {
+
+	throw new RuntimeException ( erro ) ;
+		}
+	}
+}
+
+
+
+(ABAIXO A CLASSE PRODUTO DAO DO PACOTE DAO )
+
+package dao;
+import java.util.ArrayList ;
+import java.util.List ;
+import model.Produto ;
+
+public class ProdutoDAO extends Produto {
+	public List<Produto> listar ( ) }
+		List<Produto> produtos = new ArrayList<Produto> ( ) ;
+	Connection com = new ConnectionFactory ( ).getConnection ( ) ;
+	PreparedStatement psmt = com.prepareStatement ( “ select * from produto ”) ;
+	ResultSet rs= set.executeQuery ( ) ;
+while ( rs . next ( ) ) {
+	Produto p = new Produto ( ) ;
+	p . setId ( rs . getInt ( “ id “ ) ) ;
+	p . setNome ( rs . getString ( “ nome “ ) ) ;
+	p . setPreco ( rs . getDouble ( “ preco “ ) ) ;
+	produtos.add ( p ) ;
+}
+	rs . close ( ) ;
+	set.close ( ) ;
+	con . close ( ) ;
+} catch ( SQLException erro)  {
+		Throw new RuntimeException (erro) ;
+	}
+		return  produtos ;
+
+	}
+}
+
+
+
+(ABAIXO A CLASSE PRODUTO DO PACOTE MODELO QUE CRIARÁ O MODELO DE NEGÓCIO)
+
+package model ;
+public class Produto {
+	private int id ;
+	private String nome ;
+	private double preco ;
+
+public int getId ( ) {
+	return id ;
+	}
+public void setId (int id ) {
+	this.id = id ;
+	}
+public String getNome ( ) {
+	Return nome ;
+	}
+public void setNome ( String nome ) {
+	this.nome = nome ;
+	}
+public double getPreco ( ) {
+	return preco ;
+	}
+Public void setPreco ( double preco ) {
+	this.preco = preco ;
+	}
+@Override
+public String toString ( ) {
+return “Poduto Info [id =  “+ id + “ , nome = “ + nome + ” , preco R$ = “ +  preco + “] “ ;
+	}
+}
+
+
+
+(ABAIXO A CLASSE MAIN DO PACOTE WIEW PARA EXECUTAR A QUERY DO BANCO DE DADOS)
+
+package view ; 
+import dao.ProdutoDAO ;
+import model.Produto ;
+ 
+public class Main {
+
+	public static void main ( String [ ] args ) {
+
+		ProdutoDAO dao = new ProdutoDAO ( ) ;
+
+for ( Produto p : dao . listar ( ) )  {
+	System . out . println ( p. toString ( ) ) ;
+
+		}
+	}
+} 
